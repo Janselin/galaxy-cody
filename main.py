@@ -1,3 +1,4 @@
+
 import pygame, random
 
 WIDTH = 800
@@ -11,6 +12,18 @@ pygame.mixer.init()
 screen = pygame.display.set_mode((WIDTH,HEIGHT))
 pygame.display.set_caption('Cody Galáctico')
 clock = pygame.time.Clock()
+
+#texto
+
+def draw_text(surface,text,size,x,y):
+
+    font = pygame.font.SysFont('serif', size)
+    text_surface = font.render(text,True,WHITE)
+    text_rect = text_surface.get_rect()
+    text_rect.midtop = (x,y)
+    surface.blit(text_surface,text_rect)
+
+
 
 class Player (pygame.sprite.Sprite):
     def __init__(self):
@@ -101,6 +114,7 @@ for i in range(8):
     all_sprites.add(meteor)
     meteor_list.add(meteor)
 
+score = 0
 running = True
 
 while running:
@@ -120,7 +134,7 @@ while running:
     #colisiones - meteoro + laser
     hits = pygame.sprite.groupcollide(meteor_list,bullets,True,True)
     for hit in hits:
-        
+        score += 10
         meteor = Meteoro()
         all_sprites.add(meteor)
         meteor_list.add(meteor)
@@ -134,6 +148,11 @@ while running:
 
     screen.blit(background, [0,0])
     all_sprites.draw(screen)
+    #score
+    draw_text(screen,str(score),25, WIDTH //2, 10)
+
+
+
     pygame.display.flip()
 
 pygame.quit()
