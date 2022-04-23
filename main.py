@@ -35,6 +35,25 @@ def draw_shield_bar(surface,x,y,percentage):
     pygame.draw.rect(surface,GREEN,fill)
     pygame.draw.rect(surface,WHITE,border,2)
 
+#game over screen
+def show_go_screen():
+    screen.blit(background,(0,0))
+    draw_text(screen,'SHOOTER',65,WIDTH // 2, HEIGHT // 4)
+    draw_text(screen, 'Instrucciones van aqui', 27,WIDTH // 2, HEIGHT // 2)
+    draw_text (screen, 'Press key', 20,WIDTH // 2, HEIGHT * 3/4)
+    pygame.display.flip()
+    
+    
+    
+    waiting = True
+    while waiting:
+        clock.tick(60)
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                pygame.quit()
+
+            if event.type == pygame.KEYUP:
+                waiting = False
 
 class Player (pygame.sprite.Sprite):
     def __init__(self):
@@ -126,31 +145,50 @@ laser_sound = pygame.mixer.Sound('assets/laser5.ogg')
 explosion_sound = pygame.mixer.Sound('assets/explosion.wav')
 pygame.mixer.music.load('assets/music.ogg')
 pygame.mixer.music.set_volume(0.1)
-
-#grupos
-all_sprites = pygame.sprite.Group()
-meteor_list = pygame.sprite.Group()
-bullets = pygame.sprite.Group()
-
-player = Player()
-all_sprites.add(player)
-
-
-#cantidad de meteoritos
-for i in range(8):
-    meteor = Meteoro()
-    all_sprites.add(meteor)
-    meteor_list.add(meteor)
-
-score = 0
-
 #musica de fondo
 pygame.mixer.music.play(loops=-1)
+
+#pantalla game over
+
+game_over = True
+
 
 
 running = True
 
+
+#eventos
 while running:
+
+    #para pantalla game over
+    if game_over:
+        show_go_screen()
+
+
+        game_over = False
+
+                
+        #grupos
+        all_sprites = pygame.sprite.Group()
+        meteor_list = pygame.sprite.Group()
+        bullets = pygame.sprite.Group()
+
+        player = Player()
+        all_sprites.add(player)
+
+
+        #cantidad de meteoritos
+        for i in range(8):
+            meteor = Meteoro()
+            all_sprites.add(meteor)
+            meteor_list.add(meteor)
+
+        score = 0
+
+
+
+
+
     clock.tick(60)
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
@@ -186,7 +224,7 @@ while running:
         meteor_list.add(meteor)
 
         if player.shield <= 0:
-            running = False
+            game_over = True
 
 
     screen.blit(background, [0,0])
