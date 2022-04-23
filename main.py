@@ -1,10 +1,12 @@
 
+from asyncio import shield
 import pygame, random
 
 WIDTH = 800
 HEIGHT = 600
 BLACK = (0,0,0)
 WHITE = (255,255,255)
+GREEN = (0,255,0)
 
 pygame.init()
 pygame.mixer.init()
@@ -23,6 +25,15 @@ def draw_text(surface,text,size,x,y):
     text_rect.midtop = (x,y)
     surface.blit(text_surface,text_rect)
 
+#shield en pantalla
+def draw_shield_bar(surface,x,y,percentage):
+    BAR_LENGHT = 100
+    BAR_HEIGHT = 10
+    fill = (percentage / 100 ) * BAR_LENGHT
+    border = pygame.Rect(x,y,BAR_LENGHT,BAR_HEIGHT)
+    fill = pygame.Rect(x,y,fill,BAR_HEIGHT)
+    pygame.draw.rect(surface,GREEN,fill)
+    pygame.draw.rect(surface,WHITE,border,2)
 
 
 class Player (pygame.sprite.Sprite):
@@ -38,6 +49,9 @@ class Player (pygame.sprite.Sprite):
         self.rect.centerx = WIDTH // 2
         self.rect.bottom = HEIGHT - 10
         self.speed = 0
+
+        #barra de vida
+        self.shield = 100
 
     def update(self):
         self.speed_x = 0
@@ -143,6 +157,7 @@ while running:
             running = False
 
         #disparos
+        
         elif event.type == pygame.KEYDOWN:
             if event.key == pygame.K_SPACE:
                 player.shoot()
@@ -160,10 +175,18 @@ while running:
         meteor_list.add(meteor)
 
     #colisiones - jugador + meteoro
-
+    #mas shield
     hits = pygame.sprite.spritecollide(player,meteor_list,True)
-    if hits:
-        running = False
+    for hit in hits:
+        player.shield -= 25
+        
+        #agregar meteoro desp de ser golpeado
+        meteor = Meteoro()
+        all_sprites.add(meteor)
+        meteor_list.add(meteor)
+
+        if player.shield <= 0:
+            running = False
 
 
     screen.blit(background, [0,0])
@@ -172,7 +195,8 @@ while running:
     #score
     draw_text(screen,str(score),25, WIDTH //2, 10)
 
-
+    #escudo en pantalla
+    draw_shield_bar(screen,5,5,player.shield)
 
     pygame.display.flip()
 
