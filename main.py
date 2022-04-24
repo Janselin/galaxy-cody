@@ -1,12 +1,5 @@
-
-from asyncio import shield
-import pygame, random
-
-WIDTH = 800
-HEIGHT = 600
-BLACK = (0,0,0)
-WHITE = (255,255,255)
-GREEN = (0,255,0)
+import pygame, random, sys
+from constantes import *
 
 pygame.init()
 pygame.mixer.init()
@@ -38,9 +31,9 @@ def draw_shield_bar(surface,x,y,percentage):
 #game over screen
 def show_go_screen():
     screen.blit(background,(0,0))
-    draw_text(screen,'SHOOTER',65,WIDTH // 2, HEIGHT // 4)
-    draw_text(screen, 'Instrucciones van aqui', 27,WIDTH // 2, HEIGHT // 2)
-    draw_text (screen, 'Press key', 20,WIDTH // 2, HEIGHT * 3/4)
+    draw_text(screen,'Cody Galáctico',65,WIDTH // 2, HEIGHT // 4)
+    draw_text(screen, 'Puntaje a superar: ', 27,WIDTH // 2, HEIGHT // 2)
+    draw_text (screen, 'Presiona la tecla s para comenzar', 20,WIDTH // 2, HEIGHT * 3/4)
     pygame.display.flip()
     
     
@@ -53,7 +46,8 @@ def show_go_screen():
                 pygame.quit()
 
             if event.type == pygame.KEYUP:
-                waiting = False
+                if event.key == pygame.K_s:
+                    waiting = False
 
 class Player (pygame.sprite.Sprite):
     def __init__(self):
@@ -134,7 +128,10 @@ background = pygame.image.load('assets/background.png').convert()
 
 #imagens de los meteoros
 meteor_images = []
-meteoros_list = ['assets/meteorGrey_big1.png','assets/meteorGrey_big2.png','assets/meteorGrey_big3.png','assets/meteorGrey_big4.png','assets/meteorGrey_med1.png','assets/meteorGrey_med2.png','assets/meteorGrey_small1.png','assets/meteorGrey_small2.png','assets/meteorGrey_tiny1.png','assets/meteorGrey_tiny2.png']
+meteoros_list = ['assets/meteorGrey_big1.png','assets/meteorGrey_med1.png']
+
+'''
+meteoros_list = ['assets/meteorGrey_big1.png','assets/meteorGrey_big2.png','assets/meteorGrey_big3.png','assets/meteorGrey_big4.png','assets/meteorGrey_med1.png','assets/meteorGrey_med2.png','assets/meteorGrey_small1.png','assets/meteorGrey_small2.png','assets/meteorGrey_tiny1.png','assets/meteorGrey_tiny2.png']'''
 
 for img in meteoros_list:
     meteor_images.append(pygame.image.load(img).convert())
@@ -151,9 +148,6 @@ pygame.mixer.music.play(loops=-1)
 #pantalla game over
 
 game_over = True
-
-
-
 running = True
 
 
@@ -163,8 +157,6 @@ while running:
     #para pantalla game over
     if game_over:
         show_go_screen()
-
-
         game_over = False
 
                 
@@ -184,9 +176,6 @@ while running:
             meteor_list.add(meteor)
 
         score = 0
-
-
-
 
 
     clock.tick(60)
@@ -239,4 +228,5 @@ while running:
     pygame.display.flip()
 
 pygame.quit()
+sys.exit()
 
