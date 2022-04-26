@@ -1,11 +1,11 @@
-import pygame, random, sys
+import pygame, random, sys, os
 from constantes import *
 
 pygame.init()
 pygame.mixer.init()
 
 screen = pygame.display.set_mode((WIDTH,HEIGHT))
-pygame.display.set_caption('Cody Galáctico')
+pygame.display.set_caption('GalaxyCody')
 clock = pygame.time.Clock()
 
 #texto
@@ -31,7 +31,7 @@ def draw_shield_bar(surface,x,y,percentage):
 #game over screen
 def show_go_screen():
     screen.blit(background,(0,0))
-    draw_text(screen,'Cody Galáctico',65,WIDTH // 2, HEIGHT // 4)
+    # draw_text(screen,'Cody Galáctico',65,WIDTH // 2, HEIGHT // 4)
     draw_text(screen, 'Puntaje a superar: ', 27,WIDTH // 2, HEIGHT // 2)
     draw_text (screen, 'Presiona la tecla s para comenzar', 20,WIDTH // 2, HEIGHT * 3/4)
     pygame.display.flip()
@@ -44,6 +44,8 @@ def show_go_screen():
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 pygame.quit()
+                sys.exit()
+
 
             if event.type == pygame.KEYUP:
                 if event.key == pygame.K_s:
@@ -53,11 +55,8 @@ class Player (pygame.sprite.Sprite):
     def __init__(self):
         super().__init__()
 
-        self.image = pygame.image.load('assets/player.png').convert()
-
-        self.image.set_colorkey(BLACK)  #quita lo negro de la img
-
-
+        self.image = pygame.image.load(os.path.join('assets/player2.png'))
+        
         self.rect = self.image.get_rect()
         self.rect.centerx = WIDTH // 2
         self.rect.bottom = HEIGHT - 10
@@ -88,7 +87,7 @@ class Player (pygame.sprite.Sprite):
 class Meteoro (pygame.sprite.Sprite):
     def __init__(self):
         super().__init__()
-        self.image = random.choice(meteor_images)
+        self.image = pygame.image.load('assets/meteorGrey_big3.png')
         self.image.set_colorkey(BLACK)  #quita lo negro de la img
         self.rect = self.image.get_rect()
 
@@ -96,7 +95,7 @@ class Meteoro (pygame.sprite.Sprite):
         self.rect.x = random.randrange(WIDTH - self.rect.width)
         self.rect.y = random.randrange(100 - 40)
         self.speed_y = random.randrange(1,10)
-        self.speed_x = random.randrange(-5,5)
+        self.speed_x = random.randrange(-5,2)
 
 
     def update (self):
@@ -105,7 +104,7 @@ class Meteoro (pygame.sprite.Sprite):
         if self.rect.top > HEIGHT + 10 or self.rect.left < - 40 or self.rect.right > WIDTH + 25:
             self.rect.x = random.randrange(WIDTH - self.rect.width)
             self.rect.y = random.randrange(140 - 100)
-            self.speed_y = random.randrange(1,10)
+            self.speed_y = random.randrange(1,5)
 
 class Bullet(pygame.sprite.Sprite):
     def __init__(self,x,y):
@@ -124,26 +123,11 @@ class Bullet(pygame.sprite.Sprite):
             self.kill()
 
 
-background = pygame.image.load('assets/background.png').convert()
-
-#imagens de los meteoros
-meteor_images = []
-meteoros_list = ['assets/meteorGrey_big1.png','assets/meteorGrey_med1.png']
-
-'''
-meteoros_list = ['assets/meteorGrey_big1.png','assets/meteorGrey_big2.png','assets/meteorGrey_big3.png','assets/meteorGrey_big4.png','assets/meteorGrey_med1.png','assets/meteorGrey_med2.png','assets/meteorGrey_small1.png','assets/meteorGrey_small2.png','assets/meteorGrey_tiny1.png','assets/meteorGrey_tiny2.png']'''
-
-for img in meteoros_list:
-    meteor_images.append(pygame.image.load(img).convert())
+background = pygame.image.load('assets/menu.png').convert()
 
 #sonidos
 
 laser_sound = pygame.mixer.Sound('assets/laser5.ogg')
-explosion_sound = pygame.mixer.Sound('assets/explosion.wav')
-pygame.mixer.music.load('assets/music.ogg')
-pygame.mixer.music.set_volume(0.1)
-#musica de fondo
-pygame.mixer.music.play(loops=-1)
 
 #pantalla game over
 
@@ -159,7 +143,6 @@ while running:
         show_go_screen()
         game_over = False
 
-                
         #grupos
         all_sprites = pygame.sprite.Group()
         meteor_list = pygame.sprite.Group()
@@ -170,7 +153,7 @@ while running:
 
 
         #cantidad de meteoritos
-        for i in range(8):
+        for i in range(5):
             meteor = Meteoro()
             all_sprites.add(meteor)
             meteor_list.add(meteor)
@@ -182,9 +165,9 @@ while running:
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             running = False
+            
 
-        #disparos
-        
+        #disparos        
         elif event.type == pygame.KEYDOWN:
             if event.key == pygame.K_SPACE:
                 player.shoot()
@@ -196,7 +179,7 @@ while running:
     hits = pygame.sprite.groupcollide(meteor_list,bullets,True,True)
     for hit in hits:
         score += 10
-        explosion_sound.play()
+       
         meteor = Meteoro()
         all_sprites.add(meteor)
         meteor_list.add(meteor)
