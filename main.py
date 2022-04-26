@@ -30,21 +30,24 @@ def draw_shield_bar(surface,x,y,percentage):
     pygame.draw.rect(surface,GREEN,fill)
     pygame.draw.rect(surface,WHITE,border,2)
 
-
-
-
-
-
-
-# game over screen
-def show_go_screen():
+# menu screen
+def show_menu():
     screen.blit(menu,(0,0))
     draw_text(screen, 'Puntaje a superar: ', 27,WHITE,WIDTH // 2, HEIGHT // 2)
     draw_text (screen, 'Presiona la tecla s para comenzar', 20,BLACK,WIDTH // 2, HEIGHT * 3/4)
     pygame.display.flip()
+    wait()
+
+#game over screen
+def show_game_over():
+    screen.blit(background,(0,0))
+    draw_text(screen, 'GAME OVER', 45,WHITE,WIDTH // 2, HEIGHT // 3)
+    draw_text(screen, 'Tu puntaje fue: '+ str(score), 30,WHITE,WIDTH // 2, HEIGHT // 2)
     
-    
-    
+    pygame.display.flip()
+    wait()
+
+def wait():    
     waiting = True
     while waiting:
         clock.tick(60)
@@ -52,7 +55,6 @@ def show_go_screen():
             if event.type == pygame.QUIT:
                 pygame.quit()
                 sys.exit()
-
 
             if event.type == pygame.KEYUP:
                 if event.key == pygame.K_s:
@@ -94,7 +96,7 @@ class Player (pygame.sprite.Sprite):
 class Meteoro (pygame.sprite.Sprite):
     def __init__(self):
         super().__init__()
-        self.image = pygame.image.load('assets/meteorGrey_big3.png')
+        self.image = pygame.image.load('assets/meteorGrey_big4.png')
         self.image.set_colorkey(BLACK)  #quita lo negro de la img
         self.rect = self.image.get_rect()
 
@@ -148,7 +150,7 @@ while running:
 
     #para pantalla game over
     if game_over:
-        show_go_screen()
+        show_menu()
         game_over = False
 
         #grupos
@@ -169,7 +171,7 @@ while running:
         score = 0
 
 
-    clock.tick(60)
+    clock.tick(FPS)
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             running = False
@@ -203,18 +205,21 @@ while running:
         all_sprites.add(meteor)
         meteor_list.add(meteor)
 
+        #termina el juego cuando la vida es 0
         if player.shield <= 0:
             game_over = True
+            show_game_over()
 
 
     screen.blit(background, [0,0])
     all_sprites.draw(screen)
     
-    #score
+    #score en pantalla
     draw_text(screen,str(score),25,WHITE, WIDTH //2, 10)
 
     #escudo en pantalla
     draw_shield_bar(screen,5,5,player.shield)
+    
 
     pygame.display.flip()
 
