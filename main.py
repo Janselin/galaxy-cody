@@ -211,7 +211,7 @@ while running:
     all_sprites.draw(screen)
     
     #score
-    draw_text(screen,str(score),25, WIDTH //2, 10)
+    draw_text(screen,str(score),25,WHITE, WIDTH //2, 10)
 
     #escudo en pantalla
     draw_shield_bar(screen,5,5,player.shield)
@@ -220,4 +220,3 @@ while running:
 
 pygame.quit()
 sys.exit()
-
