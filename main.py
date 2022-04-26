@@ -8,12 +8,14 @@ screen = pygame.display.set_mode((WIDTH,HEIGHT))
 pygame.display.set_caption('GalaxyCody')
 clock = pygame.time.Clock()
 
+
+
 #texto
 
-def draw_text(surface,text,size,x,y):
+def draw_text(surface,text,size,color,x,y):
 
-    font = pygame.font.SysFont('serif', size)
-    text_surface = font.render(text,True,WHITE)
+    font = pygame.font.SysFont('serif', size, bold=True)
+    text_surface = font.render(text,True,color)
     text_rect = text_surface.get_rect()
     text_rect.midtop = (x,y)
     surface.blit(text_surface,text_rect)
@@ -28,12 +30,17 @@ def draw_shield_bar(surface,x,y,percentage):
     pygame.draw.rect(surface,GREEN,fill)
     pygame.draw.rect(surface,WHITE,border,2)
 
-#game over screen
+
+
+
+
+
+
+# game over screen
 def show_go_screen():
-    screen.blit(background,(0,0))
-    # draw_text(screen,'Cody Galáctico',65,WIDTH // 2, HEIGHT // 4)
-    draw_text(screen, 'Puntaje a superar: ', 27,WIDTH // 2, HEIGHT // 2)
-    draw_text (screen, 'Presiona la tecla s para comenzar', 20,WIDTH // 2, HEIGHT * 3/4)
+    screen.blit(menu,(0,0))
+    draw_text(screen, 'Puntaje a superar: ', 27,WHITE,WIDTH // 2, HEIGHT // 2)
+    draw_text (screen, 'Presiona la tecla s para comenzar', 20,BLACK,WIDTH // 2, HEIGHT * 3/4)
     pygame.display.flip()
     
     
@@ -123,7 +130,8 @@ class Bullet(pygame.sprite.Sprite):
             self.kill()
 
 
-background = pygame.image.load('assets/menu.png').convert()
+background = pygame.image.load('assets/background.png').convert()
+menu =  pygame.image.load('assets/menu.png').convert()
 
 #sonidos
 
