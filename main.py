@@ -8,8 +8,6 @@ screen = pygame.display.set_mode((WIDTH,HEIGHT))
 pygame.display.set_caption('GalaxyCody')
 clock = pygame.time.Clock()
 
-
-
 #texto
 
 def draw_text(surface,text,size,color,x,y):
@@ -43,7 +41,7 @@ def show_game_over():
     screen.blit(background,(0,0))
     draw_text(screen, 'GAME OVER', 45,WHITE,WIDTH // 2, HEIGHT // 3)
     draw_text(screen, 'Tu puntaje fue: '+ str(score), 30,WHITE,WIDTH // 2, HEIGHT // 2)
-    
+    draw_text (screen, 'Presiona la tecla s para comenzar', 20,BLACK,WIDTH // 2, HEIGHT * 3/4)
     pygame.display.flip()
     wait()
 
@@ -59,6 +57,11 @@ def wait():
             if event.type == pygame.KEYUP:
                 if event.key == pygame.K_s:
                     waiting = False
+
+def get_high_score():
+    with open('highscore.txt', 'r') as f:
+        return f.read()
+
 
 class Player (pygame.sprite.Sprite):
     def __init__(self):
@@ -144,6 +147,14 @@ laser_sound = pygame.mixer.Sound('assets/laser5.ogg')
 game_over = True
 running = True
 
+####high score
+
+try:
+    highest_score = int(get_high_score())
+
+    
+except:
+    highest_score = 0
 
 #eventos
 while running:
@@ -178,7 +189,7 @@ while running:
             
 
         #disparos        
-        elif event.type == pygame.KEYDOWN:
+        elif event.type == pygame.KEYUP:
             if event.key == pygame.K_SPACE:
                 player.shoot()
 
@@ -215,11 +226,23 @@ while running:
     all_sprites.draw(screen)
     
     #score en pantalla
-    draw_text(screen,str(score),25,WHITE, WIDTH //2, 10)
+    draw_text(screen,'Score: ' + str(score),22,WHITE,48,15)
 
     #escudo en pantalla
-    draw_shield_bar(screen,5,5,player.shield)
+    draw_shield_bar(screen,8,5,player.shield)
     
+    ##checking high score
+
+    if (highest_score < score):
+        highest_score = score   
+
+    
+    with open('highscore.txt', 'w') as f:
+        f.write(str(highest_score))
+
+    draw_text (screen, 'Highscore: '+ str(highest_score),22,WHITE,76,38)
+
+
 
     pygame.display.flip()
 
