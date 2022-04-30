@@ -1,5 +1,7 @@
 import pygame, random, sys, os
 from constantes import *
+import shutil
+from pathlib import Path
 
 pygame.init()
 pygame.mixer.init()
@@ -7,6 +9,8 @@ pygame.mixer.init()
 screen = pygame.display.set_mode((WIDTH,HEIGHT))
 pygame.display.set_caption('GalaxyCody')
 clock = pygame.time.Clock()
+current_path = Path.cwd()
+file_path = current_path / 'highscore.txt'
 
 #texto
 
@@ -59,8 +63,8 @@ def wait():
                     waiting = False
 
 def get_high_score():
-    with open('highscore.txt', 'r') as f:
-        return f.read()
+    with open(file_path, 'r') as file:
+        return file.read()
 
 
 class Player (pygame.sprite.Sprite):
@@ -237,8 +241,8 @@ while running:
         highest_score = score   
 
     
-    with open('highscore.txt', 'w') as f:
-        f.write(str(highest_score))
+    with open(file_path, 'w') as file:
+        file.write(str(highest_score))
 
     draw_text (screen, 'Highscore: '+ str(highest_score),22,WHITE,76,38)
 
