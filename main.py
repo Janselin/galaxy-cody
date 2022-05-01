@@ -33,21 +33,21 @@ def draw_shield_bar(surface,x,y,percentage):
 # menu screen
 def show_menu():
     screen.blit(menu,(0,0))
-    draw_text(screen, 'Puntaje a superar: '+ str(highest_score),27,WHITE,WIDTH // 2, HEIGHT // 2)
-    draw_text (screen, 'Presiona la tecla s para comenzar', 20,BLACK,WIDTH // 2, HEIGHT * 3/4)
+    draw_text(screen, 'Highscore: '+ str(highest_score),35,WHITE,WIDTH // 2, 320)
+    draw_text (screen, 'Presiona la tecla s para comenzar', 20,BLACK,WIDTH // 2, 490)
     pygame.display.flip()
     wait()
 
 #game over screen
 def show_game_over():
     screen.blit(background,(0,0))
-    draw_text(screen, 'GAME OVER', 45,WHITE,WIDTH // 2, HEIGHT // 3)
+    draw_text(screen, 'GAME OVER',60,WHITE,WIDTH // 2, HEIGHT // 5)
     
     if highest_score <= score:
-        draw_text(screen, 'Superaste puntaje: '+ str(highest_score), 30,WHITE,WIDTH // 2, HEIGHT // 2)
+        draw_text(screen, 'Superaste el highscore: '+ str(highest_score), 30,WHITE,WIDTH // 2, 320)
     else:
-        draw_text(screen, 'Tu puntaje fue: '+ str(score), 30,WHITE,WIDTH // 2, HEIGHT // 2)
-    draw_text (screen, 'Presiona la tecla s para comenzar', 20,BLACK,WIDTH // 2, HEIGHT * 3/5)
+        draw_text(screen, 'Tu puntaje fue: '+ str(score), 30,WHITE,WIDTH // 2, 320)
+    draw_text (screen, 'Presiona la tecla s para comenzar', 20,BLACK,WIDTH // 2, 490)
     pygame.display.flip()
     wait()
 
