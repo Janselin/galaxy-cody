@@ -1,6 +1,5 @@
 import pygame, random, sys, os
 from constantes import *
-import shutil
 from pathlib import Path
 
 pygame.init()
@@ -13,10 +12,9 @@ current_path = Path.cwd()
 file_path = current_path / 'highscore.txt'
 
 #texto
-
 def draw_text(surface,text,size,color,x,y):
 
-    font = pygame.font.SysFont('serif', size, bold=True)
+    font = pygame.font.Font(current_path / 'assets/IBMPlexSans-Bold.ttf', size, bold=True)
     text_surface = font.render(text,True,color)
     text_rect = text_surface.get_rect()
     text_rect.midtop = (x,y)
@@ -35,7 +33,7 @@ def draw_shield_bar(surface,x,y,percentage):
 # menu screen
 def show_menu():
     screen.blit(menu,(0,0))
-    draw_text(screen, 'Puntaje a superar: ', 27,WHITE,WIDTH // 2, HEIGHT // 2)
+    draw_text(screen, 'Puntaje a superar: '+ str(highest_score),27,WHITE,WIDTH // 2, HEIGHT // 2)
     draw_text (screen, 'Presiona la tecla s para comenzar', 20,BLACK,WIDTH // 2, HEIGHT * 3/4)
     pygame.display.flip()
     wait()
@@ -44,8 +42,12 @@ def show_menu():
 def show_game_over():
     screen.blit(background,(0,0))
     draw_text(screen, 'GAME OVER', 45,WHITE,WIDTH // 2, HEIGHT // 3)
-    draw_text(screen, 'Tu puntaje fue: '+ str(score), 30,WHITE,WIDTH // 2, HEIGHT // 2)
-    draw_text (screen, 'Presiona la tecla s para comenzar', 20,BLACK,WIDTH // 2, HEIGHT * 3/4)
+    
+    if highest_score <= score:
+        draw_text(screen, 'Superaste Puntaje: '+ str(highest_score), 30,WHITE,WIDTH // 2, HEIGHT // 2)
+    else:
+        draw_text(screen, 'Tu puntaje fue: '+ str(score), 30,WHITE,WIDTH // 2, HEIGHT // 2)
+    draw_text (screen, 'Presiona la tecla s para comenzar', 20,BLACK,WIDTH // 2, HEIGHT * 3/5)
     pygame.display.flip()
     wait()
 
@@ -151,11 +153,9 @@ laser_sound = pygame.mixer.Sound('assets/laser5.ogg')
 game_over = True
 running = True
 
-####high score
-
+#### high score
 try:
     highest_score = int(get_high_score())
-
     
 except:
     highest_score = 0
@@ -168,7 +168,7 @@ while running:
         show_menu()
         game_over = False
 
-        #grupos
+    #grupos
         all_sprites = pygame.sprite.Group()
         meteor_list = pygame.sprite.Group()
         bullets = pygame.sprite.Group()
@@ -177,7 +177,7 @@ while running:
         all_sprites.add(player)
 
 
-        #cantidad de meteoritos
+    #cantidad de meteoritos
         for i in range(5):
             meteor = Meteoro()
             all_sprites.add(meteor)
@@ -192,7 +192,7 @@ while running:
             running = False
             
 
-        #disparos        
+    #disparos        
         elif event.type == pygame.KEYUP:
             if event.key == pygame.K_SPACE:
                 player.shoot()
@@ -215,12 +215,12 @@ while running:
     for hit in hits:
         player.shield -= 25
         
-        #agregar meteoro desp de ser golpeado
+    #agregar meteoro desp de ser golpeado
         meteor = Meteoro()
         all_sprites.add(meteor)
         meteor_list.add(meteor)
 
-        #termina el juego cuando la vida es 0
+    #termina el juego cuando la vida es 0
         if player.shield <= 0:
             game_over = True
             show_game_over()
@@ -240,14 +240,11 @@ while running:
     if (highest_score < score):
         highest_score = score   
 
-    
+    #escribe el score en el archivo
     with open(file_path, 'w') as file:
         file.write(str(highest_score))
 
     draw_text (screen, 'Highscore: '+ str(highest_score),22,WHITE,76,38)
-
-
-
     pygame.display.flip()
 
 pygame.quit()
