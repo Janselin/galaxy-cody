@@ -44,7 +44,7 @@ def show_game_over():
     draw_text(screen, 'GAME OVER', 45,WHITE,WIDTH // 2, HEIGHT // 3)
     
     if highest_score <= score:
-        draw_text(screen, 'Superaste Puntaje: '+ str(highest_score), 30,WHITE,WIDTH // 2, HEIGHT // 2)
+        draw_text(screen, 'Superaste puntaje: '+ str(highest_score), 30,WHITE,WIDTH // 2, HEIGHT // 2)
     else:
         draw_text(screen, 'Tu puntaje fue: '+ str(score), 30,WHITE,WIDTH // 2, HEIGHT // 2)
     draw_text (screen, 'Presiona la tecla s para comenzar', 20,BLACK,WIDTH // 2, HEIGHT * 3/5)
