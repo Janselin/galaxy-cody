@@ -6,7 +6,7 @@ pygame.init()
 pygame.mixer.init()
 
 screen = pygame.display.set_mode((WIDTH,HEIGHT))
-pygame.display.set_caption('GalaxyCody')
+pygame.display.set_caption('Galaxy Cody')
 clock = pygame.time.Clock()
 current_path = Path.cwd()
 file_path = current_path / 'highscore.txt'
@@ -44,10 +44,13 @@ def show_game_over():
     draw_text(screen, 'GAME OVER',60,WHITE,WIDTH // 2, HEIGHT // 5)
     
     if highest_score <= score:
-        draw_text(screen, 'Superaste el highscore: '+ str(highest_score), 30,WHITE,WIDTH // 2, 320)
+        draw_text(screen, '¡Superaste el highscore!', 32,WHITE,WIDTH // 2, 280)
+        draw_text(screen, str(highest_score), 32,WHITE,WIDTH // 2, 330)        
+
     else:
-        draw_text(screen, 'Tu puntaje fue: '+ str(score), 30,WHITE,WIDTH // 2, 320)
+        draw_text(screen, 'Tu puntaje fue: '+ str(score), 30,WHITE,WIDTH // 2, 280)
     draw_text (screen, 'Presiona la tecla s para comenzar', 20,BLACK,WIDTH // 2, 490)
+
     pygame.display.flip()
     wait()
 
@@ -67,7 +70,6 @@ def wait():
 def get_high_score():
     with open(file_path, 'r') as file:
         return file.read()
-
 
 class Player (pygame.sprite.Sprite):
     def __init__(self):
@@ -145,11 +147,9 @@ background = pygame.image.load('assets/background.png').convert()
 menu =  pygame.image.load('assets/menu.png').convert()
 
 #sonidos
-
 laser_sound = pygame.mixer.Sound('assets/laser5.ogg')
 
 #pantalla game over
-
 game_over = True
 running = True
 
@@ -204,7 +204,7 @@ while running:
     hits = pygame.sprite.groupcollide(meteor_list,bullets,True,True)
     for hit in hits:
         score += 10
-       
+
         meteor = Meteoro()
         all_sprites.add(meteor)
         meteor_list.add(meteor)
@@ -236,7 +236,6 @@ while running:
     draw_shield_bar(screen,8,5,player.shield)
     
     ##checking high score
-
     if (highest_score < score):
         highest_score = score   
 
