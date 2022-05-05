@@ -147,7 +147,7 @@ background = pygame.image.load('assets/background.png').convert()
 menu =  pygame.image.load('assets/menu.png').convert()
 
 #sonidos
-laser_sound = pygame.mixer.Sound('assets/laser5.ogg')
+laser_sound = pygame.mixer.Sound('assets/laser5.wav')
 
 #pantalla game over
 game_over = True
