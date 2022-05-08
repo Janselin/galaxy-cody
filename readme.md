@@ -6,7 +6,7 @@ Para poder ejecutar este programa se necesita tener instalado:
 
 Ejecutar el archivo main.py para poder jugar.
 
-<h2> ----- ☄ Documentación ☄ ----- </h2>
+<h1> ----- ☄ Documentación ☄ ----- </h1>
 
 [Documentacion-Galaxy-Cody](https://github.com/Janselin/galaxy-cody/files/8647493/Documentacion-MaryFernandez.pdf)
 
