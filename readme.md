@@ -11,4 +11,3 @@ Ejecutar el archivo main.py para poder jugar.
 [Documentacion-Galaxy-Cody](https://github.com/Janselin/galaxy-cody/files/8647493/Documentacion-MaryFernandez.pdf)
 
 
---- Mary Fernández ---
