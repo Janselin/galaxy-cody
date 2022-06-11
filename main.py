@@ -144,7 +144,7 @@ class Bullet(pygame.sprite.Sprite):
 
 
 background = pygame.image.load('assets/background.png').convert()
-menu =  pygame.image.load('assets/menu.png').convert()
+menu =  pygame.image.load('assets/menu.jpg').convert()
 
 #sonidos
 laser_sound = pygame.mixer.Sound('assets/laser5.wav')
