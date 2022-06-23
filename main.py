@@ -20,6 +20,7 @@ def draw_text(surface,text,size,color,x,y):
     text_rect.midtop = (x,y)
     surface.blit(text_surface,text_rect)
 
+
 #shield en pantalla
 def draw_shield_bar(surface,x,y,percentage):
     BAR_LENGHT = 100
@@ -30,13 +31,15 @@ def draw_shield_bar(surface,x,y,percentage):
     pygame.draw.rect(surface,GREEN,fill)
     pygame.draw.rect(surface,WHITE,border,2)
 
+
 # menu screen
 def show_menu():
     screen.blit(menu,(0,0))
     draw_text(screen, 'Highscore: '+ str(highest_score),35,WHITE,WIDTH // 2, 320)
-    draw_text (screen, 'Presiona la tecla s para comenzar', 20,BLACK,WIDTH // 2, 490)
+    draw_text (screen, 'START [S]', 30,BLACK,WIDTH // 2, 433)
     pygame.display.flip()
     wait()
+
 
 #game over screen
 def show_game_over():
@@ -45,14 +48,16 @@ def show_game_over():
     
     if highest_score <= score:
         draw_text(screen, '¡Superaste el highscore!', 32,WHITE,WIDTH // 2, 280)
-        draw_text(screen, str(highest_score), 32,WHITE,WIDTH // 2, 330)        
+        draw_text(screen, str(highest_score), 32,WHITE,WIDTH // 2, 330)    
+        draw_text (screen, 'START [S]', 30,BLACK,WIDTH // 2, 436)    
 
     else:
         draw_text(screen, 'Tu puntaje fue: '+ str(score), 30,WHITE,WIDTH // 2, 280)
-    draw_text (screen, 'Presiona la tecla s para comenzar', 20,BLACK,WIDTH // 2, 490)
+        draw_text (screen, 'START [S]', 30,BLACK,WIDTH // 2, 433)
 
     pygame.display.flip()
     wait()
+
 
 def wait():    
     waiting = True
@@ -66,6 +71,7 @@ def wait():
             if event.type == pygame.KEYUP:
                 if event.key == pygame.K_s:
                     waiting = False
+
 
 def get_high_score():
     with open(file_path, 'r') as file:
@@ -85,6 +91,7 @@ class Player (pygame.sprite.Sprite):
         #barra de vida
         self.shield = 100
 
+
     def update(self):
         self.speed_x = 0
         keystate = pygame.key.get_pressed()
@@ -98,11 +105,14 @@ class Player (pygame.sprite.Sprite):
             self.rect.right = WIDTH
         if self.rect.left < 0:
             self.rect.left = 0
+
+
     def shoot (self):
         bullet = Bullet(self.rect.centerx,self.rect.top)
         all_sprites.add(bullet)
         bullets.add(bullet)
         laser_sound.play()
+
 
 class Meteoro (pygame.sprite.Sprite):
     def __init__(self):
@@ -125,6 +135,7 @@ class Meteoro (pygame.sprite.Sprite):
             self.rect.x = random.randrange(WIDTH - self.rect.width)
             self.rect.y = random.randrange(140 - 100)
             self.speed_y = random.randrange(1,5)
+
 
 class Bullet(pygame.sprite.Sprite):
     def __init__(self,x,y):
